@@ -10,6 +10,8 @@ services:
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+    links:
+      - "v2ray"
   certbot:
     image: certbot/certbot
     volumes:
@@ -21,6 +23,8 @@ services:
     container_name: v2ray
     restart: always
     command: v2ray -config=/etc/v2ray/config.json
+    expose:
+      - "10086"
     ports:
       - "10086:10086"
     volumes:
