@@ -2,6 +2,7 @@ version: '3'
 services:
   nginx:
     image: nginx:1.15-alpine
+    restart: always
     ports:
       - "80:80"
       - "443:443"
@@ -14,6 +15,7 @@ services:
       - "v2ray"
   certbot:
     image: certbot/certbot
+    restart: always
     volumes:
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
@@ -29,5 +31,9 @@ services:
       - "10086:10086"
     volumes:
       - ./data/v2ray:/etc/v2ray
+    environment:
+      - "VIRTUAL_HOST=*******"
+      - "VIRTUAL_PORT=10086"
+
   
 
