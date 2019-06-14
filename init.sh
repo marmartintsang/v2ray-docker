@@ -1,14 +1,39 @@
 #!/bin/bash
-
 if ! [ -x "$(command -v docker-compose)" ]; then
   echo 'Error: docker-compose is not installed.' >&2
   exit 1
 fi
 
-domains=(alpha3.martin-tsang.com)
+
+echo Please input your domain [example.com]
+read DOMAIN
+
+echo Please input your email [v2ray@example.com]
+read EMAIL
+
+echo Please input your v2ray path [/v2ray/]
+read V2RAY_PATH
+
+echo Please input your v2ray UUID [Can be generated from https://www.uuidgenerator.net/]
+read UUID
+
+
+echo Please input your HTTP Port [80]
+read HTTPPORT
+
+echo Please input your v2ray Port [443]
+read PORT
+
+sed -e "s;%DOMAIN%;$DOMAIN;g" -e "s;%V2RAY_PATH%;$V2RAY_PATH;g"  -e "s;%HTTPPORT%;$HTTPPORT;g"  -e "s;%PORT%;$PORT;g" ./data/nginx/v2ray.conf.sample > ./data/nginx/v2ray.conf
+
+sed -e "s;%UUID%;$UUID;g" -e "s;%V2RAY_PATH%;$V2RAY_PATH;g" ./data/v2ray/config.json.sample > ./data/v2ray/config.json
+
+sed -e "s;%PORT%;$PORT;g" -e "s;%HTTPPORT%;$HTTPPORT;g"  docker-compose.yml.sample > docker-compose.yml
+
+domains=($DOMAIN)
 rsa_key_size=4096
 data_path="./data/certbot"
-email="martin.chtsang@gmail.com" # Adding a valid address is strongly recommended
+email="$EMAIL" # Adding a valid address is strongly recommended
 staging=0 # Set to 1 if you're testing your setup to avoid hitting request limits
 
 if [ -d "$data_path" ]; then
@@ -36,7 +61,6 @@ docker-compose run --rm --entrypoint "\
     -out '$path/fullchain.pem' \
     -subj '/CN=localhost'" certbot
 echo
-
 
 echo "### Starting nginx ..."
 docker-compose up --force-recreate -d nginx
@@ -78,3 +102,9 @@ echo
 
 echo "### Reloading nginx ..."
 docker-compose exec nginx nginx -s reload
+
+echo "### Staring services..."
+docker-compose restart
+
+
+

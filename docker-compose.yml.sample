@@ -4,8 +4,8 @@ services:
     image: nginx:1.15-alpine
     restart: always
     ports:
-      - "80:80"
-      - "443:443"
+      - "%HTTPPORT%:80"
+      - "%PORT%:443"
     volumes:
       - ./data/nginx:/etc/nginx/conf.d
       - ./data/certbot/conf:/etc/letsencrypt
@@ -27,13 +27,8 @@ services:
     command: v2ray -config=/etc/v2ray/config.json
     expose:
       - "10086"
-    ports:
-      - "10086:10086"
     volumes:
       - ./data/v2ray:/etc/v2ray
-    environment:
-      - "VIRTUAL_HOST=*******"
-      - "VIRTUAL_PORT=10086"
 
   
 

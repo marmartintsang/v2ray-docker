@@ -10,7 +10,7 @@
     "settings": {
       "clients": [
         {
-          "id": "**********",
+          "id": "%UUID%",
           "level": 1,
           "alterId": 64,
           "security": "auto"
@@ -21,7 +21,7 @@
     "network":"ws",
     "security": "auto",
     "wsSettings":{
-        "path": "/v2/"
+        "path": "%V2RAY_PATH%"
       }
     }
   }],
