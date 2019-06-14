@@ -1,5 +1,9 @@
 # Dockerize V2Ray with Nginx, Websocket and TLS
 
+## Features
+- V2Ray WebSocket with TLS
+- Automated HTTPS certificate renewal by [Certbot](https://certbot.eff.org/)
+
 ## Get Started
 1. Clone the source code
 2. Make `init.sh` executable by executing `chmod +ax init.sh`
