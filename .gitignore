@@ -1,3 +1,4 @@
 *.yml
 *.conf
 *.json
+data/certbot/conf/
